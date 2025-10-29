@@ -1,0 +1,38 @@
+{
+  "name": "seoul-subway-dashboard",
+  "version": "1.0.0",
+  "description": "AI-powered real-time Seoul Subway congestion dashboard",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 3000",
+    "dev": "python -m http.server 3000",
+    "build": "echo 'No build process needed for static HTML'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "seoul",
+    "subway",
+    "dashboard",
+    "ai",
+    "congestion",
+    "real-time",
+    "transportation",
+    "korea"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/seoul-subway-dashboard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/seoul-subway-dashboard/issues"
+  },
+  "homepage": "https://github.com/your-username/seoul-subway-dashboard#readme",
+  "engines": {
+    "node": ">=14.0.0",
+    "python": ">=3.6.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
