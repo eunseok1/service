@@ -5,7 +5,7 @@ import { Search, Star, TrendingUp, Clock, Train, Sparkles, ArrowRight, ChevronDo
 import BottomNavigation from '@/components/BottomNavigation';
 import { getFavoriteStations, saveStationUsage } from '@/lib/storage';
 import { analyzeFavoriteStations, analyzeStationTrend } from '@/lib/analysis';
-import { generateStationRecommendation, CarRecommendation } from '@/lib/recommendation';
+import { generateStationRecommendation, CarRecommendation, CarCongestion } from '@/lib/recommendation';
 import { getLineColor } from '@/lib/utils';
 import { random } from '@/lib/random';
 
@@ -39,8 +39,8 @@ const STATIONS = [
 ];
 
 // Mock 열차 칸 데이터 생성
-const generateMockCarData = (direction: 'up' | 'down') => {
-  const cars = [];
+const generateMockCarData = (direction: 'up' | 'down'): CarCongestion[] => {
+  const cars: CarCongestion[] = [];
   for (let i = 1; i <= 10; i++) {
     // 랜덤하게 혼잡도 생성 (일반적으로 중간 칸이 여유로움)
     let congestionPercent: number;

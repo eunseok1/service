@@ -21,7 +21,7 @@ const DEFAULT_COLOR = "#666666";
 // SVG viewBox 설정 (동적으로 계산)
 const calculateViewBox = () => {
   const allStations = STATIONS;
-  if (allStations.length === 0) return { width: 1200, height: 800 };
+  if (allStations.length === 0) return { width: 1200, height: 800, minX: 0, minY: 0 };
   
   const minX = Math.min(...allStations.map(s => s.layoutX));
   const maxX = Math.max(...allStations.map(s => s.layoutX));
@@ -580,7 +580,7 @@ export default function InteractiveSubwayMap({
   }, [activeLine, getVisibleData]);
 
   // 라벨 위치 계산 (개선된 버전: bounding box 충돌 감지 및 노선 방향 기반 오프셋)
-  const getLabelPosition = useCallback((station: Station, existingLabels: Map<string, { x: number; y: number; anchor: string }>): { x: number; y: number; anchor: string } => {
+  const getLabelPosition = useCallback((station: Station, existingLabels: Map<string, { x: number; y: number; anchor: 'start' | 'middle' | 'end' }>): { x: number; y: number; anchor: 'start' | 'middle' | 'end' } => {
     const { stations: visibleStations } = getVisibleData(activeLine);
     const visibleStationsWithLabels = visibleStations.filter(s => 
       s.id !== station.id && shouldShowLabel(s)
@@ -623,7 +623,7 @@ export default function InteractiveSubwayMap({
       let hasCollision = false;
 
       // 기존 라벨들과 충돌 검사
-      for (const [otherStationId, otherLabelPos] of existingLabels.entries()) {
+      for (const [otherStationId, otherLabelPos] of Array.from(existingLabels.entries())) {
         const otherStation = visibleStationsWithLabels.find(s => s.id === otherStationId);
         if (!otherStation) continue;
 
@@ -786,7 +786,7 @@ export default function InteractiveSubwayMap({
             const stationsWithLabels = visibleStations.filter(station => shouldShowLabel(station));
             
             // 라벨 위치를 순차적으로 계산 (이전 라벨 위치를 고려)
-            const labelPositions = new Map<string, { x: number; y: number; anchor: string }>();
+            const labelPositions = new Map<string, { x: number; y: number; anchor: 'start' | 'middle' | 'end' }>();
             
             // 우선순위에 따라 정렬 (환승역 우선)
             const sortedStations = [...stationsWithLabels].sort((a, b) => {
