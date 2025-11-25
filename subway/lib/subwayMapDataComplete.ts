@@ -186,9 +186,9 @@ export const getStationColor = (stationId: string, congestionLevel?: "여유" | 
     // 혼잡도에 따른 색상 조정 로직
     // 혼잡도가 높을수록 어둡게, 낮을수록 밝게
     const baseColor = lineColor;
-    const alpha = congestionLevel === 1 ? 1.0 : // 여유: 밝게
-                  congestionLevel === 2 ? 0.9 : // 보통: 약간 어둡게
-                  congestionLevel === 3 ? 0.7 : // 혼잡: 어둡게
+    const alpha = congestionLevel === "여유" ? 1.0 : // 여유: 밝게
+                  congestionLevel === "보통" ? 0.9 : // 보통: 약간 어둡게
+                  congestionLevel === "주의" ? 0.7 : // 혼잡: 어둡게
                   0.5; // 매우 혼잡: 매우 어둡게
     
     // RGB 값 추출 및 조정

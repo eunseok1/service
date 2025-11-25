@@ -1,7 +1,7 @@
 // 최단 경로 알고리즘 (Dijkstra, Yen's K-Shortest Paths)
 
 import { SubwayGraph, GraphNode, GraphEdge, RouteResult, RouteSearchOptions } from './types';
-import { STATIONS, getStationById } from '../subwayMapData';
+import { STATIONS, getStationById, type LineId } from '../subwayMapData';
 import { calculateEdgeCostWithCongestion, calculateRouteCongestionScore, calculateEdgeCostFast, calculateRouteCongestionScoreFromSegments } from './crowdingWeight';
 import { logger } from '../logger';
 
@@ -13,7 +13,7 @@ interface PathNode {
   transfers: number;         // 환승 횟수
   path: string[];            // 경로 (역 ID 배열)
   edges: GraphEdge[];        // 사용한 엣지들
-  lines: Set<string>;        // 사용한 노선들
+  lines: Set<LineId>;        // 사용한 노선들
 }
 
 // 우선순위 큐 (최소 힙)
@@ -72,7 +72,7 @@ export async function findFastestRoute(
     transfers: 0,
     path: [startId],
     edges: [],
-    lines: new Set(),
+    lines: new Set<LineId>(),
   });
   
   while (!queue.isEmpty() && iterations < maxIterations) {
@@ -177,7 +177,7 @@ export async function findLessTransferRoute(
     transfers: 0,
     path: [startId],
     edges: [],
-    lines: new Set(),
+    lines: new Set<LineId>(),
   });
   
   while (!queue.isEmpty() && iterations < maxIterations) {
@@ -265,7 +265,7 @@ export async function findLessCrowdedRoute(
     transfers: 0,
     path: [startId],
     edges: [],
-    lines: new Set(),
+    lines: new Set<LineId>(),
   });
   
 while (!queue.isEmpty() && iterations < maxIterations) {
@@ -337,7 +337,7 @@ async function buildRouteResult(
   const perSegment: Array<{
     from: string;
     to: string;
-    line: string;
+    line: LineId;
     travelTime: number;
     durationMinutes: number;
     congestion: number;
@@ -355,8 +355,8 @@ async function buildRouteResult(
       const toName = toStation?.name || pathNode.path[i + 1];
       
       // 공통 노선 찾기
-      const commonLine = fromStation && toStation 
-        ? fromStation.lines.find(l => toStation.lines.includes(l)) || fromStation.lines[0] || '1'
+      const commonLine: LineId = fromStation && toStation 
+        ? (fromStation.lines.find(l => toStation.lines.includes(l)) || fromStation.lines[0] || '1') as LineId
         : '1';
       
       // 환승 여부 확인 (같은 역 이름이지만 다른 ID인 경우)
@@ -462,8 +462,8 @@ async function buildRouteResult(
           const toName = toStation?.name || pathNode.path[i + 1];
           
           // 공통 노선 찾기
-          const commonLine = fromStation && toStation 
-            ? fromStation.lines.find(l => toStation.lines.includes(l)) || fromStation.lines[0] || '1'
+          const commonLine: LineId = fromStation && toStation 
+            ? (fromStation.lines.find(l => toStation.lines.includes(l)) || fromStation.lines[0] || '1') as LineId
             : '1';
           
           const fallbackTime = 2;
@@ -572,12 +572,12 @@ export async function findKShortestPaths(
   const endNode = graph.nodes.get(endId);
   
   if (!startNode) {
-    logger.error('시작 노드를 찾을 수 없음', { startId });
+    logger.error('시작 노드를 찾을 수 없음', undefined, { startId });
     return [];
   }
   
   if (!endNode) {
-    logger.error('도착 노드를 찾을 수 없음', { endId });
+    logger.error('도착 노드를 찾을 수 없음', undefined, { endId });
     return [];
   }
   

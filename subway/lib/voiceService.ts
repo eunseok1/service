@@ -40,6 +40,7 @@ export const recognizeVoiceCommand = (text: string): VoiceCommand | null => {
         line: lineMatch ? lineMatch[1] : '2',
       };
     }
+    // matchedStation이 없으면 다음 조건들을 확인하기 위해 계속 진행
   }
 
   // 경로 조회 - 더 많은 키워드 지원
