@@ -334,7 +334,15 @@ async function buildRouteResult(
   const fare = calculateFare(pathNode.path.length - 1, pathNode.transfers);
   
   // 구간별 상세 정보 (배치로 혼잡도 조회)
-  const perSegment = [];
+  const perSegment: Array<{
+    from: string;
+    to: string;
+    line: string;
+    travelTime: number;
+    durationMinutes: number;
+    congestion: number;
+    isTransfer: boolean;
+  }> = [];
   const congestionPromises: Array<Promise<{ level: number }>> = [];
   
   // edges가 비어있으면 path 기반으로 perSegment 생성
