@@ -23,10 +23,10 @@ export const generateCongestionTips = async (): Promise<GeneratedContent> => {
   const content = `# 서울 지하철 혼잡 피하기 노하우
 
 ## 시간대별 혼잡도 분석
-${peakHours.map((h) => `- ${h.hour}시: ${h.level} (평균 ${h.avgPassengers}명)`).join('\n')}
+${peakHours.map((h: { hour: number; level: string; avgPassengers: number }) => `- ${h.hour}시: ${h.level} (평균 ${h.avgPassengers}명)`).join('\n')}
 
 ## 실전 팁
-${popularTips.map((tip, i) => `${i + 1}. ${tip}`).join('\n')}
+${popularTips.map((tip: string, i: number) => `${i + 1}. ${tip}`).join('\n')}
 
 ## 추천 전략
 1. 출근 시간대(7-9시)에는 10분 일찍 출발하세요
@@ -63,7 +63,7 @@ export const generateCommuteReport = async (userId?: string): Promise<GeneratedC
 - 가장 여유로운 시간대: ${analysis.leastCongestedHour}시
 
 ## 추천 사항
-${analysis.recommendations.map((r, i) => `${i + 1}. ${r}`).join('\n')}
+${analysis.recommendations.map((r: string, i: number) => `${i + 1}. ${r}`).join('\n')}
 `;
 
   return {
@@ -85,7 +85,7 @@ export const generateTouristRoute = async (destination: string): Promise<Generat
   const content = `# ${destination} 편안한 이동 루트
 
 ## 추천 경로
-${route.stations.map((s, i) => `${i + 1}. ${s.name} (${s.line}호선) - ${s.congestion}`).join('\n')}
+${route.stations.map((s: { name: string; line: string; congestion: string }, i: number) => `${i + 1}. ${s.name} (${s.line}호선) - ${s.congestion}`).join('\n')}
 
 ## 경로 정보
 - 예상 소요 시간: ${route.estimatedTime}분
@@ -94,7 +94,7 @@ ${route.stations.map((s, i) => `${i + 1}. ${s.name} (${s.line}호선) - ${s.cong
 - 추천 시간대: ${route.recommendedTime}
 
 ## 팁
-${route.tips.map((t, i) => `${i + 1}. ${t}`).join('\n')}
+${route.tips.map((t: string, i: number) => `${i + 1}. ${t}`).join('\n')}
 `;
 
   return {
@@ -119,7 +119,7 @@ export const generateCompanyProposal = async (companyData: any): Promise<Generat
 - 피크 시간대 혼잡도: ${analysis.peakCongestion}
 
 ## 최적화 방안
-${analysis.solutions.map((s, i) => `### ${i + 1}. ${s.title}\n${s.description}\n예상 효과: ${s.impact}`).join('\n\n')}
+${analysis.solutions.map((s: { title: string; description: string; impact: string }, i: number) => `### ${i + 1}. ${s.title}\n${s.description}\n예상 효과: ${s.impact}`).join('\n\n')}
 
 ## 예상 효과
 - 통근 시간 절약: ${analysis.timeSaved}분/일/인
@@ -127,7 +127,7 @@ ${analysis.solutions.map((s, i) => `### ${i + 1}. ${s.title}\n${s.description}\n
 - 비용 절감: 월 ${analysis.costSavings}원
 
 ## 실행 계획
-${analysis.actionPlan.map((a, i) => `${i + 1}. ${a}`).join('\n')}
+${analysis.actionPlan.map((a: string, i: number) => `${i + 1}. ${a}`).join('\n')}
 `;
 
   return {
