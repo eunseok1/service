@@ -370,7 +370,7 @@ async function buildRouteResult(
         travelTime: defaultTime, // 환승은 4분, 일반은 2분
         durationMinutes: defaultTime, // 명시적으로 추가
         congestion: 2,
-        isTransfer: isTransfer,
+        isTransfer: isTransfer ?? false,
       });
     }
   } else {
@@ -405,7 +405,7 @@ async function buildRouteResult(
             travelTime: finalTravelTime,
             durationMinutes: finalTravelTime, // 명시적으로 추가
             congestion: 2, // 기본값: 보통
-            isTransfer: edge.isTransfer,
+            isTransfer: edge.isTransfer ?? false,
           });
           continue;
         }
@@ -433,7 +433,7 @@ async function buildRouteResult(
           travelTime: finalTravelTime,
           durationMinutes: finalTravelTime, // 명시적으로 추가
           congestion: 2, // 임시값, 나중에 업데이트
-          isTransfer: edge.isTransfer,
+          isTransfer: edge.isTransfer ?? false,
         });
       }
     
